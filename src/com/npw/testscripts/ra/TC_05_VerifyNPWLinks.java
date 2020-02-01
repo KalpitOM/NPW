@@ -49,7 +49,7 @@ public class TC_05_VerifyNPWLinks extends BaseTest
 
 		//get all the links on a page
 		allLinks = Elements.getWebElements(By.xpath("//a[not(contains(@href,'secure'))]"));
-		System.out.println("size of links before removing duplicates: "+allLinks.size());
+		System.out.println("size of links before removing duplicates is: "+allLinks.size());
 
 		try {
 			//Remove duplicates
