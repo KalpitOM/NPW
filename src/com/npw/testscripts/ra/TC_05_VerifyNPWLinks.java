@@ -31,7 +31,7 @@ public class TC_05_VerifyNPWLinks extends BaseTest
 	private static String sHomePage = "";
 	private static boolean bStatus;
 	private static List<WebElement> allLinks;
-
+	private static List<String> listBadLinks = new ArrayList<String>();
 
 	private static Map<String, String> objMap = new HashMap<String, String>();
 	
@@ -58,21 +58,21 @@ public class TC_05_VerifyNPWLinks extends BaseTest
 				String sLinkText = link.getText();
 				String sLink = link.getAttribute("href");
 				List<String> list = new ArrayList<String>();
-				List<String> listBadLinks = new ArrayList<String>();
+				
 				if(!objListMap.containsKey(sLink) && sLink!=null && sLink.contains("nonprod") && !sLink.contains("object"))
 				{
 					URL url = new URL(sLink);
 					int iResponse=CommonFunc.chkBrokenLink(url);
 					if (iResponse!=200) {
 						System.out.println("Response code of the URL "+sLink+" is... "+iResponse+" Expected response is 200");
-						listBadLinks.add("Response code of the URL \"+sLink+\" is... "+iResponse+" Expected response is 200");
+						listBadLinks.add("Response code of the URL "+sLink+" is... "+iResponse+" Expected response is 200");
 					}
 					else 
 					{
 						list.add(sLink);
 						//list.add(sLinkText);
 						objListMap.put(sLink, list);
-						//System.out.println(sLink);
+						System.out.println("Home pahe links : "+sLink);
 					}
 					
 				}
@@ -115,10 +115,21 @@ public class TC_05_VerifyNPWLinks extends BaseTest
 					//also check if the link is external, then ignore it
 					if(!objListMap.containsKey(sLink) && !objSubListMap.containsKey(sLink) && sLink!=null && sLink.contains("nonprod") && !sLink.contains("object"))
 					{
-						subList.add(sLink);
-						//subList.add(sLinkText);
-						objSubListMap.put(sLink, subList);
-						System.out.println("sublinks.... "+ sLink);
+						URL url = new URL(sLink);
+						int iResponse=CommonFunc.chkBrokenLink(url);
+						if (iResponse!=200) {
+							System.out.println("Response code of the URL "+sLink+" is... "+iResponse+" Expected response is 200");
+							listBadLinks.add("Response code of the URL "+sLink+" is... "+iResponse+" Expected response is 200");
+						}
+						else
+						{
+							subList.add(sLink);
+							//subList.add(sLinkText);
+							objSubListMap.put(sLink, subList);
+							System.out.println("sublinks.... "+ sLink);
+						}
+						
+						
 					}
 				}
 
